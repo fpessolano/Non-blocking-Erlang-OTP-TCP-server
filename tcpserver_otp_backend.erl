@@ -48,7 +48,6 @@ start(Name, Port, Loop, StateInit) ->
 case inet:getif() of 
 		{ok,[{IP,_,_},_]} -> 
 			State = #server_state{port = Port, server_loop = Loop, ip = IP, loop_state = StateInit},
-			process_flag(trap_exit, true),
 			gen_server:start_link({local, Name}, ?MODULE, State, []);
 		_Other ->
 			{error, machine_IP_invalid}
@@ -62,6 +61,7 @@ init(State = #server_state{port=Port, loop_state = {Module, Function}}) ->
 	LoopState = Module:Function(),
 	case gen_tcp:listen(Port, ?TCP_OPTIONS) of
    		{ok, Server_socket} ->
+   			process_flag(trap_exit, true),
    			NewState = State#server_state{server_socket = Server_socket, loop_state = LoopState},
    			{ok, accept(NewState)};
    		{error, Reason} ->
@@ -71,6 +71,7 @@ init(State = #server_state{port=Port, loop_state = {Module, Function}}) ->
 init(State = #server_state{port=Port}) ->
 	case gen_tcp:listen(Port, ?TCP_OPTIONS) of
    		{ok, Server_socket} ->
+   			process_flag(trap_exit, true),
    			NewState = State#server_state{server_socket = Server_socket},
    			{ok, accept(NewState)};
    		{error, Reason} ->
