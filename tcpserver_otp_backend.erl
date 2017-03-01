@@ -10,7 +10,7 @@
 % @license            =   "MIT"
 % @version            =   "0.5.0"
 % @maintainer         =   "Francesco Pessolano"
-% @email              =   "francesco@xetal.eu"
+% @email              =   "francesco@fralke.com"
 % @status             =   "in development"
 % @credits			  =	  "Jesse Farmer - http://20bits.com"
 %
